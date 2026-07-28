@@ -20,10 +20,17 @@
 ### 普通用户
 
 1. 在 GitHub 项目右侧打开 `Releases`。
-2. 下载最新版本的 `nono-desktop-pet-vX.X.X-windows.zip`。
-3. 解压后双击 `nono-desktop-pet.exe`。
+2. 下载对应系统的压缩包：
+   - Windows：`nono-desktop-pet-vX.X.X-windows.zip`
+   - macOS：`nono-desktop-pet-vX.X.X-macos.zip`
+3. 解压后运行：
+   - Windows：双击 `nono-desktop-pet.exe`
+   - macOS：打开 `nono-desktop-pet.app`
 
 不需要安装 Python，也不要直接在压缩包内运行。
+
+macOS 首次打开若提示无法验证开发者，可在 Finder 中按住 Control 点击应用，
+选择“打开”，再确认一次。本项目暂未进行 Apple 开发者签名或公证。
 
 ### 从源码运行
 

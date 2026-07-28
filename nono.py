@@ -33,8 +33,14 @@ class NonoPet:
         self.root.title("嫑嫑 nono")
         self.root.overrideredirect(True)
         self.root.attributes("-topmost", True)
-        self.root.configure(bg="#ff00ff")
-        self.root.wm_attributes("-transparentcolor", "#ff00ff")
+        if sys.platform == "darwin":
+            self.transparent_bg = "systemTransparent"
+            self.root.configure(bg=self.transparent_bg)
+            self.root.wm_attributes("-transparent", True)
+        else:
+            self.transparent_bg = "#ff00ff"
+            self.root.configure(bg=self.transparent_bg)
+            self.root.wm_attributes("-transparentcolor", self.transparent_bg)
 
         self.images = {
             name: tk.PhotoImage(file=ASSETS / f"{name}.png")
@@ -44,7 +50,7 @@ class NonoPet:
         self.label = tk.Label(
             self.root,
             image=self.images[self.state],
-            bg="#ff00ff",
+            bg=self.transparent_bg,
             borderwidth=0,
             highlightthickness=0,
             cursor="hand2",
@@ -68,6 +74,8 @@ class NonoPet:
         self.label.bind("<B1-Motion>", self.drag)
         self.label.bind("<ButtonRelease-1>", self.release)
         self.label.bind("<Button-3>", self.show_menu)
+        self.label.bind("<Button-2>", self.show_menu)
+        self.label.bind("<Control-Button-1>", self.show_menu)
 
         self.menu = tk.Menu(self.root, tearoff=0)
         self.menu.add_command(label="叫我一下", command=self.react)
