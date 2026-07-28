@@ -1,10 +1,30 @@
 import random
+import sys
 import tkinter as tk
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = (
+    Path(sys._MEIPASS)
+    if getattr(sys, "frozen", False)
+    else Path(__file__).resolve().parent
+)
 ASSETS = ROOT / "assets"
+ASSET_NAMES = (
+    "idle",
+    "happy",
+    "surprised",
+    "zoom",
+    "tired",
+    "curious",
+    "box",
+    "nervous",
+    "lotus",
+    "wave",
+    "tilted",
+    "measure",
+    "pout",
+)
 
 
 class NonoPet:
@@ -18,21 +38,7 @@ class NonoPet:
 
         self.images = {
             name: tk.PhotoImage(file=ASSETS / f"{name}.png")
-            for name in (
-                "idle",
-                "happy",
-                "surprised",
-                "zoom",
-                "tired",
-                "curious",
-                "box",
-                "nervous",
-                "lotus",
-                "wave",
-                "tilted",
-                "measure",
-                "pout",
-            )
+            for name in ASSET_NAMES
         }
         self.state = "idle"
         self.label = tk.Label(
@@ -137,4 +143,7 @@ class NonoPet:
 
 
 if __name__ == "__main__":
+    if "--self-test" in sys.argv:
+        missing = [name for name in ASSET_NAMES if not (ASSETS / f"{name}.png").is_file()]
+        raise SystemExit(1 if missing else 0)
     NonoPet().run()

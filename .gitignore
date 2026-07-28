@@ -16,4 +16,6 @@ Thumbs.db
 # Local build output
 /dist/
 /build/
+/.build-tools/
+/release/
 /*.spec

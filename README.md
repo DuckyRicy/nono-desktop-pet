@@ -17,6 +17,16 @@
 
 ## Windows 使用方法
 
+### 普通用户
+
+1. 在 GitHub 项目右侧打开 `Releases`。
+2. 下载最新版本的 `nono-desktop-pet-vX.X.X-windows.zip`。
+3. 解压后双击 `nono-desktop-pet.exe`。
+
+不需要安装 Python，也不要直接在压缩包内运行。
+
+### 从源码运行
+
 1. 安装 Python 3，并确保安装时勾选 `Add Python to PATH`。
 2. 下载或克隆本项目。
 3. 双击 `启动嫑嫑.bat`。
@@ -49,4 +59,3 @@
 - 角色/IP：周嫑嫑
 - 官方发布来源：小红书账号「周嫑嫑」
 - 桌宠整理与开发：社区贡献者
-
