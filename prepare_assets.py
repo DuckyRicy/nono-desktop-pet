@@ -19,11 +19,6 @@ SPRITES = [
     ("nervous.png", "微信图片_20260728153304_1478_145.jpg", (700, 720, 1080, 1115)),
     ("lotus.png", "微信图片_20260728153304_1478_145.jpg", (0, 1080, 370, 1440)),
     (
-        "glowstick.png",
-        "Camera_1040g3k0321jjcnecna005pm7vj57e2i3c13ljg0_CocoAI_20260719_173028_1.png",
-        (0, 0, 500, 692),
-    ),
-    (
         "wave.png",
         "Camera_1040g3k0321jjcnecna005pm7vj57e2i3c13ljg0_CocoAI_20260719_173028_2.png",
         (0, 0, 500, 509),
@@ -44,6 +39,14 @@ SPRITES = [
         (0, 0, 515, 500),
     ),
 ]
+
+# White source-background islands enclosed by an arm/handle. Coordinates refer
+# to the normalized 280x280 output, after resizing.
+ENCLOSED_BACKGROUND_SEEDS = {
+    "nervous.png": [(50, 75)],
+    "surprised.png": [(242, 136)],
+    "tired.png": [(242, 164)],
+}
 
 
 def is_background(pixel):
@@ -153,6 +156,34 @@ def remove_edge_background(image):
     subject_alpha = canvas.getchannel("A")
     expanded_alpha = subject_alpha.filter(ImageFilter.MaxFilter(5))
     outline_alpha = ImageChops.subtract(expanded_alpha, subject_alpha)
+
+    # Only outline the outside silhouette. Transparent gaps enclosed by an arm
+    # or handle stay transparent instead of receiving a white inner rim.
+    external = Image.new("L", canvas.size, 0)
+    external_pixels = external.load()
+    alpha_pixels = subject_alpha.load()
+    queue = deque()
+    for px in range(canvas.width):
+        queue.append((px, 0))
+        queue.append((px, canvas.height - 1))
+    for py in range(canvas.height):
+        queue.append((0, py))
+        queue.append((canvas.width - 1, py))
+    while queue:
+        px, py = queue.popleft()
+        if external_pixels[px, py] or alpha_pixels[px, py]:
+            continue
+        external_pixels[px, py] = 255
+        if px:
+            queue.append((px - 1, py))
+        if px + 1 < canvas.width:
+            queue.append((px + 1, py))
+        if py:
+            queue.append((px, py - 1))
+        if py + 1 < canvas.height:
+            queue.append((px, py + 1))
+    outline_alpha = ImageChops.multiply(outline_alpha, external)
+
     outlined = Image.new("RGBA", canvas.size, (255, 255, 255, 0))
     outlined.putalpha(outline_alpha)
     outlined.alpha_composite(canvas)
@@ -160,11 +191,75 @@ def remove_edge_background(image):
     return canvas
 
 
+def clear_enclosed_background(image, seeds):
+    pixels = image.load()
+    width, height = image.size
+    for seed in seeds:
+        queue = deque([seed])
+        seen = set()
+        while queue:
+            x, y = queue.popleft()
+            if (x, y) in seen or not (0 <= x < width and 0 <= y < height):
+                continue
+            seen.add((x, y))
+            r, g, b, alpha = pixels[x, y]
+            if not alpha or min(r, g, b) < 180 or max(r, g, b) - min(r, g, b) > 45:
+                continue
+            pixels[x, y] = (255, 255, 255, 0)
+            queue.extend(((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)))
+    return image
+
+
+def add_inner_outline(image):
+    """Add a white keyline only around enclosed transparent holes."""
+    subject_alpha = image.getchannel("A")
+    alpha_pixels = subject_alpha.load()
+    width, height = image.size
+
+    external = Image.new("L", image.size, 0)
+    external_pixels = external.load()
+    queue = deque()
+    for x in range(width):
+        queue.append((x, 0))
+        queue.append((x, height - 1))
+    for y in range(height):
+        queue.append((0, y))
+        queue.append((width - 1, y))
+    while queue:
+        x, y = queue.popleft()
+        if external_pixels[x, y] or alpha_pixels[x, y]:
+            continue
+        external_pixels[x, y] = 255
+        if x:
+            queue.append((x - 1, y))
+        if x + 1 < width:
+            queue.append((x + 1, y))
+        if y:
+            queue.append((x, y - 1))
+        if y + 1 < height:
+            queue.append((x, y + 1))
+
+    transparent = ImageChops.invert(subject_alpha)
+    enclosed = ImageChops.subtract(transparent, external)
+    expanded = subject_alpha.filter(ImageFilter.MaxFilter(5))
+    inner_outline_alpha = ImageChops.multiply(
+        ImageChops.subtract(expanded, subject_alpha), enclosed
+    )
+    inner_outline = Image.new("RGBA", image.size, (255, 255, 255, 0))
+    inner_outline.putalpha(inner_outline_alpha)
+    image.alpha_composite(inner_outline)
+    return image
+
+
 def main():
     OUT.mkdir(exist_ok=True)
     for output_name, source_name, crop_box in SPRITES:
         source = Image.open(ROOT / source_name)
         sprite = remove_edge_background(source.crop(crop_box))
+        sprite = clear_enclosed_background(
+            sprite, ENCLOSED_BACKGROUND_SEEDS.get(output_name, ())
+        )
+        sprite = add_inner_outline(sprite)
         if output_name == "zoom.png":
             # The next-row bee touches this pose at the very bottom of the
             # source sheet. Remove its remaining yellow tip.
