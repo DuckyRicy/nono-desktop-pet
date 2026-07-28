@@ -1,0 +1,19 @@
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local source/reference images: never publish watermarked originals
+/*.jpg
+/Camera_*.png
+/codex-clipboard-*.png
+
+# Local build output
+/dist/
+/build/
+/*.spec
