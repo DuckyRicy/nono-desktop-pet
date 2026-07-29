@@ -15,14 +15,14 @@
 - 无人操作时会从多种动作中随机发呆、挥手或玩耍
 - 深色、浅色桌面均可辨认的细白描边
 
-## Windows 使用方法
+## 下载与使用
 
 ### 普通用户
 
 1. 在 GitHub 项目右侧打开 `Releases`。
 2. 下载对应系统的压缩包：
    - Windows：`nono-desktop-pet-vX.X.X-windows.zip`
-   - macOS：`nono-desktop-pet-vX.X.X-macos.zip`
+   - macOS（Apple 芯片）：`nono-desktop-pet-vX.X.X-macos-arm64-native.zip`
 3. 解压后运行：
    - Windows：双击 `nono-desktop-pet.exe`
    - macOS：打开 `nono-desktop-pet.app`
@@ -31,6 +31,17 @@
 
 macOS 首次打开若提示无法验证开发者，可在 Finder 中按住 Control 点击应用，
 选择“打开”，再确认一次。本项目暂未进行 Apple 开发者签名或公证。
+
+目前发布的 macOS 原生版仅支持 M1、M2、M3、M4 等 Apple Silicon 芯片，
+由朋友 **Road** 协助制作并在真实 Mac 设备上测试通过。Intel Mac 暂不支持。
+
+## 版本说明
+
+### v1.0.1
+
+- 新增并修复 Apple Silicon 原生 macOS 版本
+- macOS 原生版由 **Road** 协助制作与测试
+- Windows 版本功能保持不变
 
 ### 从源码运行
 
@@ -66,3 +77,4 @@ macOS 首次打开若提示无法验证开发者，可在 Finder 中按住 Contr
 - 角色/IP：周嫑嫑
 - 官方发布来源：小红书账号「周嫑嫑」
 - 桌宠整理与开发：社区贡献者
+- macOS 原生版制作与真机测试：**Road**
