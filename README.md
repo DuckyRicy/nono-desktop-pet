@@ -68,8 +68,9 @@ Ubuntu/Linux：
 
 Windows 和 macOS 版本不需要额外安装第三方 Python 包。
 
-Linux 不支持直接运行 Windows 的 `.bat` 文件。Ubuntu 源码版使用 PyQt5 提供透明背景。
-不同 Linux 桌面环境（尤其是 Wayland 与 X11）对窗口置顶的支持可能不同，
+Linux 不支持直接运行 Windows 的 `.bat` 文件。Ubuntu 源码版使用 PyQt5 提供透明背景，
+支持由桌面系统接管拖动，并会定时维持窗口置顶。不同 Linux 桌面环境（尤其是 Wayland 与 X11）
+仍可能限制应用主动置顶，
 因此目前 Linux 版属于源码试用支持，暂不提供打包版。
 
 ## 操作

@@ -61,6 +61,7 @@ class NonoPet(QWidget):
         self.drag_start = QPoint()
         self.window_start = QPoint()
         self.dragged = False
+        self.system_move_started = False
         self.setCursor(QCursor(Qt.PointingHandCursor))
 
         screen = QApplication.primaryScreen().availableGeometry()
@@ -71,11 +72,30 @@ class NonoPet(QWidget):
         self.idle_timer.timeout.connect(self.idle_animation)
         self.idle_timer.start(9000)
 
+        # Some Linux window managers drop the always-on-top request after
+        # another application receives focus. Re-raise the pet without
+        # activating it so it stays visible without stealing keyboard input.
+        self.topmost_timer = QTimer(self)
+        self.topmost_timer.timeout.connect(self.keep_on_top)
+        self.topmost_timer.start(1000)
+
+    def keep_on_top(self):
+        self.raise_()
+
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
+            self.topmost_timer.stop()
             self.drag_start = event.globalPos()
             self.window_start = self.pos()
             self.dragged = False
+            self.system_move_started = False
+            window = self.windowHandle()
+            if (
+                "wayland" in QApplication.platformName().lower()
+                and window is not None
+                and hasattr(window, "startSystemMove")
+            ):
+                self.system_move_started = bool(window.startSystemMove())
             event.accept()
         elif event.button() == Qt.RightButton:
             self.show_menu(event.globalPos())
@@ -86,12 +106,15 @@ class NonoPet(QWidget):
             delta = event.globalPos() - self.drag_start
             if delta.manhattanLength() > QApplication.startDragDistance():
                 self.dragged = True
-            self.move(self.window_start + delta)
+            if not self.system_move_started:
+                self.move(self.window_start + delta)
             event.accept()
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton and not self.dragged:
             self.react()
+        self.system_move_started = False
+        self.topmost_timer.start(1000)
         event.accept()
 
     def react(self):
@@ -152,6 +175,7 @@ def main():
     app = QApplication(sys.argv)
     pet = NonoPet()
     pet.show()
+    pet.raise_()
     raise SystemExit(app.exec_())
 
 
