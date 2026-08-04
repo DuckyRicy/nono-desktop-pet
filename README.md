@@ -58,6 +58,14 @@ Ubuntu/Linux：
 2. 在项目文件夹打开终端，首次运行时输入 `chmod +x 启动嫑嫑.sh`。
 3. 输入 `./启动嫑嫑.sh` 启动桌宠。
 
+若希望像普通应用一样启动、不保留终端窗口：
+
+1. 输入 `chmod +x 安装Ubuntu应用图标.sh`。
+2. 输入 `./安装Ubuntu应用图标.sh`，完成一次安装。
+3. 在 Ubuntu 应用菜单搜索“嫑嫑 nono”，点击图标启动。
+
+项目更新后，再运行一次安装脚本即可更新应用菜单中的版本。
+
 Windows 和 macOS 版本不需要额外安装第三方 Python 包。
 
 Linux 不支持直接运行 Windows 的 `.bat` 文件。Ubuntu 源码版使用 PyQt5 提供透明背景。
@@ -78,6 +86,7 @@ Linux 不支持直接运行 Windows 的 `.bat` 文件。Ubuntu 源码版使用 P
 - `prepare_assets.py`：素材处理工具，仅供项目维护使用
 - `启动嫑嫑.bat`：Windows 启动入口
 - `启动嫑嫑.sh`：Linux 启动入口
+- `安装Ubuntu应用图标.sh`：将 Linux 版添加到 Ubuntu 应用菜单
 
 ## 授权与声明
 
