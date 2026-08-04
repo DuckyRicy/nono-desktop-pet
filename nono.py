@@ -37,10 +37,15 @@ class NonoPet:
             self.transparent_bg = "systemTransparent"
             self.root.configure(bg=self.transparent_bg)
             self.root.wm_attributes("-transparent", True)
-        else:
+        elif sys.platform == "win32":
             self.transparent_bg = "#ff00ff"
             self.root.configure(bg=self.transparent_bg)
             self.root.wm_attributes("-transparentcolor", self.transparent_bg)
+        else:
+            # Tk on Linux does not support Windows' -transparentcolor option.
+            # Keeping this branch separate prevents Ubuntu from crashing at startup.
+            self.transparent_bg = "#f4f1f5"
+            self.root.configure(bg=self.transparent_bg)
 
         self.images = {
             name: tk.PhotoImage(file=ASSETS / f"{name}.png")

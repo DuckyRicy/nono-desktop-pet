@@ -60,8 +60,9 @@ Linux：
 
 运行桌宠不需要额外安装第三方 Python 包。
 
-Linux 不支持直接运行 Windows 的 `.bat` 文件。不同 Linux 桌面环境（尤其是 Wayland 与 X11）
-对透明窗口和始终置顶的支持可能不同，因此目前 Linux 版属于源码试用支持，暂不提供打包版。
+Linux 不支持直接运行 Windows 的 `.bat` 文件。当前 Ubuntu 源码版可以启动和互动，
+但受 Tkinter 限制暂不支持透明背景。不同 Linux 桌面环境（尤其是 Wayland 与 X11）
+对窗口置顶的支持也可能不同，因此目前 Linux 版属于源码试用支持，暂不提供打包版。
 
 ## 操作
 
