@@ -52,17 +52,17 @@ Windows：
 1. 安装 Python 时勾选 `Add Python to PATH`。
 2. 双击 `启动嫑嫑.bat`。
 
-Linux：
+Ubuntu/Linux：
 
-1. 确保系统已安装 Python 3 和 Tkinter。Ubuntu/Debian 用户可安装 `python3-tk`。
+1. 安装透明窗口组件：`sudo apt install python3-pyqt5`。
 2. 在项目文件夹打开终端，首次运行时输入 `chmod +x 启动嫑嫑.sh`。
 3. 输入 `./启动嫑嫑.sh` 启动桌宠。
 
-运行桌宠不需要额外安装第三方 Python 包。
+Windows 和 macOS 版本不需要额外安装第三方 Python 包。
 
-Linux 不支持直接运行 Windows 的 `.bat` 文件。当前 Ubuntu 源码版可以启动和互动，
-但受 Tkinter 限制暂不支持透明背景。不同 Linux 桌面环境（尤其是 Wayland 与 X11）
-对窗口置顶的支持也可能不同，因此目前 Linux 版属于源码试用支持，暂不提供打包版。
+Linux 不支持直接运行 Windows 的 `.bat` 文件。Ubuntu 源码版使用 PyQt5 提供透明背景。
+不同 Linux 桌面环境（尤其是 Wayland 与 X11）对窗口置顶的支持可能不同，
+因此目前 Linux 版属于源码试用支持，暂不提供打包版。
 
 ## 操作
 
@@ -73,6 +73,7 @@ Linux 不支持直接运行 Windows 的 `.bat` 文件。当前 Ubuntu 源码版�
 ## 项目结构
 
 - `nono.py`：桌宠程序
+- `nono_linux.py`：Ubuntu/Linux 透明窗口版本
 - `assets/`：处理后的透明桌宠素材
 - `prepare_assets.py`：素材处理工具，仅供项目维护使用
 - `启动嫑嫑.bat`：Windows 启动入口
