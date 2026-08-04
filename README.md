@@ -45,11 +45,23 @@ macOS 首次打开若提示无法验证开发者，可在 Finder 中按住 Contr
 
 ### 从源码运行
 
-1. 安装 Python 3，并确保安装时勾选 `Add Python to PATH`。
-2. 下载或克隆本项目。
-3. 双击 `启动嫑嫑.bat`。
+先安装 Python 3，然后下载或克隆本项目。
+
+Windows：
+
+1. 安装 Python 时勾选 `Add Python to PATH`。
+2. 双击 `启动嫑嫑.bat`。
+
+Linux：
+
+1. 确保系统已安装 Python 3 和 Tkinter。Ubuntu/Debian 用户可安装 `python3-tk`。
+2. 在项目文件夹打开终端，首次运行时输入 `chmod +x 启动嫑嫑.sh`。
+3. 输入 `./启动嫑嫑.sh` 启动桌宠。
 
 运行桌宠不需要额外安装第三方 Python 包。
+
+Linux 不支持直接运行 Windows 的 `.bat` 文件。不同 Linux 桌面环境（尤其是 Wayland 与 X11）
+对透明窗口和始终置顶的支持可能不同，因此目前 Linux 版属于源码试用支持，暂不提供打包版。
 
 ## 操作
 
@@ -63,6 +75,7 @@ macOS 首次打开若提示无法验证开发者，可在 Finder 中按住 Contr
 - `assets/`：处理后的透明桌宠素材
 - `prepare_assets.py`：素材处理工具，仅供项目维护使用
 - `启动嫑嫑.bat`：Windows 启动入口
+- `启动嫑嫑.sh`：Linux 启动入口
 
 ## 授权与声明
 
