@@ -13,4 +13,8 @@ if ! python3 -c "import PyQt5" >/dev/null 2>&1; then
     exit 1
 fi
 
+if [ "${XDG_SESSION_TYPE:-}" = "wayland" ]; then
+    export QT_QPA_PLATFORM=xcb
+fi
+
 python3 nono_linux.py

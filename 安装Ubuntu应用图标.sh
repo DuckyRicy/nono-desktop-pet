@@ -27,7 +27,7 @@ cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Name=嫑嫑 nono
 Comment=一只住在桌面上的小锅
-Exec=python3 $APP_DIR/nono_linux.py
+Exec=env QT_QPA_PLATFORM=xcb python3 $APP_DIR/nono_linux.py
 Icon=$APP_DIR/assets/idle.png
 Terminal=false
 Type=Application
